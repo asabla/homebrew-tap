@@ -1,6 +1,6 @@
 cask "parakatt" do
-  version "0.1.1"
-  sha256 "abdcac36385a057fa533d20e037a456f4fe51816b281fce58b9d0af1b0c9c77d"
+  version "0.1.2"
+  sha256 "a3d2813daa236c024a1ff8f804e373b91bf64d56e9792151facf14bcdee4ffee"
 
   url "https://github.com/asabla/parakatt/releases/download/v#{version}/Parakatt-#{version}-arm64.dmg"
   name "Parakatt"
@@ -15,6 +15,9 @@ cask "parakatt" do
   postflight do
     ohai "Parakatt requires Microphone and Accessibility permissions."
     ohai "Grant these in System Settings > Privacy & Security."
+    ohai "After upgrading, you must re-grant Accessibility permission:"
+    ohai "  System Settings > Privacy & Security > Accessibility"
+    ohai "  Remove Parakatt, then re-add and enable it."
   end
 
   zap trash: [
