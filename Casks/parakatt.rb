@@ -12,6 +12,11 @@ cask "parakatt" do
 
   app "Parakatt.app"
 
+  preflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-cr", "#{staged_path}/Parakatt.app"]
+  end
+
   postflight do
     ohai "Parakatt requires Microphone and Accessibility permissions."
     ohai "Grant these in System Settings > Privacy & Security."
