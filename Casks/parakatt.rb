@@ -1,6 +1,6 @@
 cask "parakatt" do
-  version "0.2.0"
-  sha256 "72182b5bea047bf34a7a4faa6272f80360717996d7f8927469cbae4ca3f3c825"
+  version "0.3.0"
+  sha256 "dbc7922c18de1b4fb696ea00d70c35c579d6595c34f039adf77eb4b615294c1b"
 
   url "https://github.com/asabla/parakatt/releases/download/v#{version}/Parakatt-#{version}-arm64.dmg"
   name "Parakatt"
@@ -12,17 +12,13 @@ cask "parakatt" do
 
   app "Parakatt.app"
 
-  preflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-cr", "#{staged_path}/Parakatt.app"]
-  end
-
   postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Parakatt.app"],
+                   sudo: false
+
     ohai "Parakatt requires Microphone and Accessibility permissions."
-    ohai "Grant these in System Settings > Privacy & Security."
-    ohai "After upgrading, you must re-grant Accessibility permission:"
-    ohai "  System Settings > Privacy & Security > Accessibility"
-    ohai "  Remove Parakatt, then re-add and enable it."
+    ohai "Grant these in System Settings > Privacy & Security on first launch."
   end
 
   zap trash: [
