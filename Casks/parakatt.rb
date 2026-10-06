@@ -1,6 +1,6 @@
 cask "parakatt" do
-  version "0.6.1"
-  sha256 "5d20eb0d63d463f9cf35a1064dc9f90e8f88ea4350cfe0518053e2ea9107dbef"
+  version "0.7.0"
+  sha256 "ae5f84bede3602c3e5b0501f7131b4dd973146408c81e94d3db42544fb1d2b12"
 
   url "https://github.com/asabla/parakatt/releases/download/v#{version}/Parakatt-#{version}-arm64.dmg"
   name "Parakatt"
@@ -13,6 +13,7 @@ cask "parakatt" do
   app "Parakatt.app"
 
   postflight do
+    # Remove quarantine so the unsigned app can launch without right-click workaround
     system_command "/usr/bin/xattr",
                    args: ["-dr", "com.apple.quarantine", "#{appdir}/Parakatt.app"],
                    sudo: false
