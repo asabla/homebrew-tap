@@ -40,7 +40,7 @@ Pond is a local data lake per directory, with a web UI and MCP endpoints. `Casks
 To update the cask after a new stable Pond release:
 
 ```sh
-python3 scripts/update_pond.py v0.2.0
+python3 scripts/update_pond.py v0.2.1
 python3 -m unittest discover -s tests -v
 brew style Casks/pond.rb
 git diff -- Casks/pond.rb
@@ -53,12 +53,14 @@ Install Pond and copy its bundled examples into a writable directory:
 ```sh
 brew install --cask asabla/tap/pond
 pond version
-cp -R "$(brew --caskroom pond)/0.2.0/examples" ./pond-examples
+cp -R "$(brew --caskroom pond)/0.2.1/examples" ./pond-examples
 pond ./pond-examples/social
 ```
 
 Use the installed release version in the copy path; Homebrew prints the correct command at install time. Start `pond ./pond-examples/shop` in a second terminal. The bundled examples each include two saved queries and two graphs. Managed mode needs the selected engine running. Use `--runtime` to select Docker, Colima, OrbStack, Rancher Desktop in Moby mode, or Podman; run `pond doctor` to check the connection. `--minilake URL` attaches to an existing service without a local container CLI. See Pond's README for the current provider verification limits.
 
 `Casks/pond.rb.in` remains a template for the helper tests. Homebrew uses `Casks/pond.rb`.
+
+To remove a stopped project from Pond's recent list, use `pond ls --all` to find it, then `pond forget /path/to/project`. The web navigator also has **Remove from list** in an expanded stopped context. Removal keeps lake data and browser drafts. Run Pond in the project again to add it back.
 
 For offline verification of already downloaded release assets, use `--assets-dir PATH`. `--output PATH` writes a review copy elsewhere. Neither option publishes a release or pushes this tap.
