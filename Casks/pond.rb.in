@@ -1,0 +1,54 @@
+# First-release preview only. The update helper writes Casks/pond.rb from a published release.
+cask "pond" do
+  version "@VERSION@"
+
+  on_macos do
+    on_arm do
+      sha256 "@SHA256_DARWIN_ARM64@"
+      url "https://github.com/asabla/pond/releases/download/@TAG@/pond_#{version}_darwin_arm64.tar.gz"
+    end
+    on_intel do
+      sha256 "@SHA256_DARWIN_AMD64@"
+      url "https://github.com/asabla/pond/releases/download/@TAG@/pond_#{version}_darwin_amd64.tar.gz"
+    end
+  end
+  on_linux do
+    on_arm do
+      sha256 "@SHA256_LINUX_ARM64@"
+      url "https://github.com/asabla/pond/releases/download/@TAG@/pond_#{version}_linux_arm64.tar.gz"
+    end
+    on_intel do
+      sha256 "@SHA256_LINUX_AMD64@"
+      url "https://github.com/asabla/pond/releases/download/@TAG@/pond_#{version}_linux_amd64.tar.gz"
+    end
+  end
+
+  name "pond"
+  desc "Local data lake per directory with a web UI and MCP endpoints"
+  homepage "https://github.com/asabla/pond"
+
+  livecheck do
+    skip "Auto-generated on release."
+  end
+
+  binary "pond"
+
+  postflight_steps do
+    on_macos do
+      run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{staged_path}}/pond"]
+    end
+  end
+
+  zap trash: [
+    "~/.config/pond/recent.json",
+    "~/Library/Application Support/pond/recent.json",
+  ]
+
+  caveats <<~EOS
+    pond runs MiniLake in a container, so it needs a running Docker
+    (Docker Desktop, OrbStack or colima).
+    Copy the examples into a writable directory before starting them:
+      cp -R "$(brew --caskroom pond)/@VERSION@/examples" ./pond-examples
+      pond ./pond-examples/social
+  EOS
+end
