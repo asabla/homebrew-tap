@@ -13,6 +13,7 @@ brew tap asabla/tap
 | Cask | Description |
 |------|-------------|
 | `parakatt` | Voice-to-text transcription for the macOS menu bar |
+| `pond` | Local data lake per directory with a web UI and MCP endpoints |
 
 ### Install
 
@@ -32,11 +33,11 @@ brew upgrade asabla/tap/parakatt
 brew uninstall --cask parakatt
 ```
 
-## Pond: first release prepared
+## Pond
 
-Pond is a local data lake per directory, with a web UI and MCP endpoints. Its binary cask is staged as `Casks/pond.rb.in`. The `.in` file is a preview with placeholders and is not advertised to Homebrew. Pond has no published stable release yet; do not rename the preview to `.rb` or insert snapshot hashes.
+Pond is a local data lake per directory, with a web UI and MCP endpoints. `Casks/pond.rb` installs the published binary release for Apple Silicon and Intel Macs.
 
-After Pond publishes a stable release with its generated cask, checksum file and four platform archives:
+To update the cask after a new stable Pond release:
 
 ```sh
 python3 scripts/update_pond.py v0.1.0
@@ -47,7 +48,7 @@ git diff -- Casks/pond.rb
 
 The helper downloads the release assets from `asabla/pond`, verifies every archive against both `checksums.txt` and the generated cask, normalizes Homebrew formatting, then writes `Casks/pond.rb` atomically. A validation failure leaves the existing cask unchanged. The release tag above is an example; pass the actual published version. Review and commit the cask, then push this tap before announcing installation.
 
-Once the release and tap update are published:
+Install Pond and copy its bundled examples into a writable directory:
 
 ```sh
 brew install --cask asabla/tap/pond
@@ -57,5 +58,7 @@ pond ./pond-examples/social
 ```
 
 Use the installed release version in the copy path; Homebrew prints the correct command at install time. Start `pond ./pond-examples/shop` in a second terminal. The bundled examples each include two saved queries and two graphs. Docker Desktop, OrbStack or colima must be running.
+
+`Casks/pond.rb.in` remains a template for the helper tests. Homebrew uses `Casks/pond.rb`.
 
 For offline verification of already downloaded release assets, use `--assets-dir PATH`. `--output PATH` writes a review copy elsewhere. Neither option publishes a release or pushes this tap.
